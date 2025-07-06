@@ -21,6 +21,8 @@ app.use("/api/auth", authRoutes);
 // MongoDB + Server Start
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
+dotenv.config();
+console.log("🔍 MONGO_URI:", process.env.MONGO_URI); // TEMP for debugging
 
 mongoose.connect(MONGO_URI)
   .then(() => {
