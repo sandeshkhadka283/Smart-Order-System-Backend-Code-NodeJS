@@ -24,9 +24,13 @@ const MONGO_URI = process.env.MONGO_URI;
 dotenv.config();
 console.log("🔍 MONGO_URI:", process.env.MONGO_URI); // TEMP for debugging
 
-mongoose.connect(MONGO_URI)
-  .then(() => {
-    console.log("✅ Connected to MongoDB");
-    app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
-  })
-  .catch((err) => console.error("❌ MongoDB Error:", err));
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 10000, // wait up to 10 seconds for primary
+})
+.then(() => {
+  console.log("✅ Connected to MongoDB");
+  app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+})
+.catch((err) => console.error("❌ MongoDB Error:", err));
