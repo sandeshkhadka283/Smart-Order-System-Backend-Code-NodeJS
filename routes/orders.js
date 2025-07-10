@@ -103,6 +103,35 @@ router.post("/confirm/:id", authenticate, authorizeStaff, async (req, res) => {
   }
 });
 
+
+// Get orders by status (staff only)
+router.get("/status/:status", authenticate, authorizeStaff, async (req, res) => {
+  const { status } = req.params;
+  const validStatuses = [
+    "pending",
+    "confirmed",
+    "received",
+    "preparing",
+    "ready",
+    "serving",
+    "completed",
+    "cancelled",
+  ];
+
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ message: "Invalid status" });
+  }
+
+  try {
+    const orders = await Order.find({ status });
+    res.json(orders);
+  } catch (err) {
+    console.error("Failed to fetch orders by status:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 // Delete order by ID (staff only)
 router.delete("/:id", authenticate, authorizeStaff, async (req, res) => {
   try {
