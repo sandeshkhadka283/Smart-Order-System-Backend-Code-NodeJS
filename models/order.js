@@ -23,15 +23,15 @@ const orderSchema = new mongoose.Schema({
   status: {
   type: String,
   enum: [
-    "Pending",      // 👈 Add this
-    "Received",
-    "Preparing",
-    "Ready",
-    "Serving",
-    "Completed",
-    "Cancelled",
+    "pending",      // 👈 Add this
+    "received",
+    "preparing",
+    "ready",
+    "serving",
+    "completed",
+    "cancelled",
   ],
-  default: "Pending", // 👈 Or keep "Received" if you want to skip pending
+  default: "pending", // 👈 Or keep "Received" if you want to skip pending
 },
 }, { timestamps: true }); // ✅ To track createdAt / updatedAt
 
