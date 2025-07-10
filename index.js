@@ -18,6 +18,9 @@ app.use(morgan("dev"));
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
 
+app.get("/", (req, res) => {
+  res.send("✅ Backend API is running. Visit /api/orders or /api/auth for more.");
+});
 // MongoDB + Server Start
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
