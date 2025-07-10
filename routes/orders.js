@@ -41,6 +41,43 @@ router.get("/pending", authenticate, authorizeStaff, async (req, res) => {
   }
 });
 
+
+router.patch("/:id/status", authenticate, authorizeStaff, async (req, res) => {
+  try {
+    const { status } = req.body;
+    const validStatuses = [
+      "pending",
+      "confirmed",
+      "received",
+      "preparing",
+      "ready",
+      "serving",
+      "completed",
+      "cancelled",
+    ];
+
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.json({ message: "Order status updated", order });
+  } catch (err) {
+    console.error("Failed to update order status:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 // Get confirmed orders (staff only)
 router.get("/confirmed", authenticate, authorizeStaff, async (req, res) => {
   try {
@@ -79,4 +116,3 @@ router.delete("/:id", authenticate, authorizeStaff, async (req, res) => {
 });
 
 export default router;
-
