@@ -6,7 +6,7 @@ import morgan from "morgan";
 
 import orderRoutes from "./routes/orders.js";
 import authRoutes from "./routes/auth.js";
-
+import adminRoutes from "./routes/admin.js"
 dotenv.config();
 const app = express();
 
