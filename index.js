@@ -17,6 +17,8 @@ app.use(morgan("dev"));
 
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("✅ Backend API is running. Visit /api/orders or /api/auth for more.");

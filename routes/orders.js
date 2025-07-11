@@ -144,4 +144,22 @@ router.delete("/:id", authenticate, authorizeStaff, async (req, res) => {
   }
 });
 
+// GET /api/orders/today
+router.get("/today", authenticate, authorizeStaff, async (req, res) => {
+  try {
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const ordersToday = await Order.find({
+      createdAt: { $gte: startOfToday }
+    });
+
+    res.json(ordersToday);
+  } catch (err) {
+    console.error("Error fetching today's orders:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 export default router;
