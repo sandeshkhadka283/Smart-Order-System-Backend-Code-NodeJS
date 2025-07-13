@@ -9,22 +9,35 @@ const router = express.Router();
 router.get("/stats", authenticate, authorizeStaff, async (req, res) => {
   try {
     const totalOrders = await Order.countDocuments();
-    const pendingOrders = await Order.countDocuments({ status: "Pending" });
-    const completedOrders = await Order.countDocuments({ status: "Completed" });
     const totalUsers = await User.countDocuments();
-    const totalTables = await Table.countDocuments();  // <-- get table count
+    const totalTables = await Table.countDocuments();
+
+    // Aggregate order counts by status dynamically
+    const ordersByStatus = await Order.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]);
+
+    // Convert aggregation to an object like { pending: X, completed: Y }
+    const byStatus = {};
+    ordersByStatus.forEach(({ _id, count }) => {
+      byStatus[_id.toLowerCase()] = count;
+    });
+
+    // If you want, add activeSessions (or set 0)
+    const activeSessions = 0;
 
     res.json({
+      totalTables,
+      activeSessions,
       totalOrders,
-      pendingOrders,
-      completedOrders,
+      byStatus,
       totalUsers,
-      totalTables,  // <-- include totalTables in response
     });
   } catch (err) {
     console.error("Error fetching stats:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 export default router;
