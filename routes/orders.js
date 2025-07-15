@@ -8,7 +8,7 @@ const router = express.Router();
 // Create new order (accessible without staff auth, but requires authentication)
 router.post("/", async (req, res) => {
   try {
-    const { tableId, items, location } = req.body;
+    const { tableId, items, location, ip } = req.body;
 
     if (!tableId || !items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: "Table ID and items are required" });
@@ -18,7 +18,8 @@ router.post("/", async (req, res) => {
       tableId,
       items,
       location,
-      status: "pending", // default status when creating
+      ip,             // Add this line
+      status: "pending",
       createdAt: new Date(),
     });
 
@@ -30,6 +31,7 @@ router.post("/", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 // Get pending orders (staff only)
 router.get("/pending", authenticate, authorizeStaff, async (req, res) => {
