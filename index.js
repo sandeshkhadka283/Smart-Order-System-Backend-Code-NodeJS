@@ -9,6 +9,8 @@ import orderRoutes from "./routes/orders.js";
 import authRoutes from "./routes/auth.js";
 import adminRoutes from "./routes/admin.js";
 import tablesRoute from "./routes/table.js"; // ✅ import tables route
+import menuItemRoutes from "./routes/menuItems.js";
+
 
 dotenv.config();
 
@@ -40,6 +42,8 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/tables", tablesRoute); // ✅ ADD THIS LINE
+app.use("/api/menu-items", menuItemRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("✅ Backend API is running. Visit /api/orders or /api/auth for more.");
