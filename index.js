@@ -10,6 +10,8 @@ import authRoutes from "./routes/auth.js";
 import adminRoutes from "./routes/admin.js";
 import tablesRoute from "./routes/table.js"; // ✅ import tables route
 import menuItemRoutes from "./routes/menuItems.js";
+import superAdminRoutes from "./routes/superAdmin.js";
+
 
 
 dotenv.config();
@@ -43,6 +45,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/tables", tablesRoute); // ✅ ADD THIS LINE
 app.use("/api/menu-items", menuItemRoutes);
+app.use("/api/superadmin", superAdminRoutes);
+
 
 
 app.get("/", (req, res) => {
